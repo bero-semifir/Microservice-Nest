@@ -37,6 +37,14 @@ services:
       - AGENTS_URI=http://agents:3000
       - ENTREPRISES_URI=http://entreprises:3000
 
+  competence-query:
+    build: ./competences/competence-query
+    ports:
+      - 3004:3000
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/competence
+      - APP_PORT=3000
+
   mongo:
     image: mongo
     ports:
