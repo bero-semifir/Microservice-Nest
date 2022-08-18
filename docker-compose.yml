@@ -23,6 +23,20 @@ services:
       - MONGO_URI=mongodb://mongo:27017/agents
       - APP_PORT=3000
   
+  formateurs:
+    depends_on:
+      - agents
+      - entreprises
+    build:
+      ./formateurs
+    ports:
+      - 3003:3000
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/formateurs
+      - APP_PORT=3000
+      - AGENTS_URI=http://agents:3000
+      - ENTREPRISES_URI=http://entreprises:3000
+
   mongo:
     image: mongo
     ports:

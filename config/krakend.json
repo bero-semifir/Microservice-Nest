@@ -59,6 +59,15 @@
       ]
     },
     {
+      "endpoint": "/agents/{id}",
+      "backend": [
+        {
+          "url_pattern": "/agents/{id}",
+          "host": ["http://agents:3000"]
+        }
+      ]
+    },
+    {
       "endpoint": "/agents",
       "method": "POST",
       "backend": [

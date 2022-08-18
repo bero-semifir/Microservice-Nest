@@ -5,6 +5,10 @@ import { UpdateFormateurDto } from './dto/update-formateur.dto';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 
+const AGENTS_URI = process.env.AGENTS_URI || 'http://localhost:8000/agents';
+const ENTREPRISES_URI =
+  process.env.ENTREPRISES_URI || 'http://localhost:8000/entreprises';
+
 @Injectable()
 export class FormateursService {
   constructor(private readonly httpService: HttpService) {}
@@ -18,14 +22,16 @@ export class FormateursService {
   }
 
   async findOne(id: string) {
+    console.log(
+      `${AGENTS_URI}/${id}`,
+      // `${ENTREPRISES_URI}/${agent.data.entreprise_id}`,
+    );
     // this.httpService.get().toPromise() est déprécié depuis RxJS 7
     const agent = await lastValueFrom(
-      this.httpService.get(`http://localhost:3002/agents/${id}`),
+      this.httpService.get(`${AGENTS_URI}/${id}`),
     );
     const entreprise = await lastValueFrom(
-      this.httpService.get(
-        `http://localhost:3001/entreprises/${agent.data.entreprise_id}`,
-      ),
+      this.httpService.get(`${ENTREPRISES_URI}/${agent.data.entreprise_id}`),
     );
     return {
       agent: { ...agent.data },
