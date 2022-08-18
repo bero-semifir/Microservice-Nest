@@ -3,6 +3,7 @@ import { CreateFormateurDto } from './dto/create-formateur.dto';
 import { UpdateFormateurDto } from './dto/update-formateur.dto';
 
 import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class FormateursService {
@@ -17,13 +18,15 @@ export class FormateursService {
   }
 
   async findOne(id: string) {
-    const agent = await this.httpService
-      .get(`http://localhost:3002/agents/${id}`)
-      .toPromise();
-
-    const entreprise = await this.httpService
-      .get(`http://localhost:3001/entreprises/${agent.data.entreprise_id}`)
-      .toPromise();
+    // this.httpService.get().toPromise() est déprécié depuis RxJS 7
+    const agent = await lastValueFrom(
+      this.httpService.get(`http://localhost:3002/agents/${id}`),
+    );
+    const entreprise = await lastValueFrom(
+      this.httpService.get(
+        `http://localhost:3001/entreprises/${agent.data.entreprise_id}`,
+      ),
+    );
     return {
       agent: { ...agent.data },
       entreprise: { ...entreprise.data },
