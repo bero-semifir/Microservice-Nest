@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  entreprises:
+    depends_on:
+      - mongo
+    # image: s/entreprise
+    build: ./entreprises
+    ports:
+      - 3001:3000
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/entreprises
+      - APP_PORT=3000
+  
+  agents:
+    depends_on:
+      - mongo
+    # image: s/agent
+    build: ./agents
+    ports:
+      - 3002:3000
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/agents
+      - APP_PORT=3000
+  
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+
+  krakend:
+    image: devopsfaith/krakend:2.0.5
+    ports:
+      - 8000:8080
+      - 1234:1234
+      - 8089:8090
+    volumes:
+      - ./config/krakend.json:/etc/krakend/krakend.json
+      # - ./certs:/etc/krakend/certs
+    

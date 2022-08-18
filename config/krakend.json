@@ -1,0 +1,103 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "extra_config": {},
+  "endpoints": [
+    {
+      "method": "POST",
+      "endpoint": "/entreprises",
+      "backend": [
+        {
+          "url_pattern": "/entreprises",
+          "host": ["http://entreprises:3000"],
+          "is_collection": true,
+          "mapping": {
+            "collection": "entreprises"
+          }
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "endpoint": "/entreprises",
+      "backend": [
+        {
+          "url_pattern": "/entreprises",
+          "host": ["http://entreprises:3000"],
+          "is_collection": true,
+          "mapping": {
+            "collection": "entreprises"
+          }
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "endpoint": "/entreprises/{id}",
+      "backend": [
+        {
+          "url_pattern": "/entreprises/{id}",
+          "host": ["http://entreprises:3000"],
+          "is_collection": false,
+          "mapping": {
+            "collection": "entreprises"
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/agents",
+      "backend": [
+        {
+          "url_pattern": "/agents",
+          "host": ["http://agents:3000"],
+          "is_collection": true,
+          "mapping": {
+            "collection": "agents"
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/agents",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/agents",
+          "host": ["http://agents:3000"],
+          "is_collection": true,
+          "mapping": {
+            "collection": "agents"
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/formateurs/{id}",
+      "extra_config": {
+        "proxy": {
+          "sequential": true
+        }
+      },
+      "backend": [
+        {
+          "host": ["http://agents:3000"],
+          "url_pattern": "/agents/{id}",
+          "encoding": "safejson",
+          "mapping": {
+            "_id": "agent_id"
+          }
+        },
+        {
+          "host": ["http://entreprises:3000"],
+          "url_pattern": "/entreprises/{resp0_entreprise_id}",
+          "encoding": "safejson",
+          "group": "entreprise",
+          "mapping": {
+            "_id": "entreprise_id"
+          }
+        }
+      ]
+    }
+  ]
+}
