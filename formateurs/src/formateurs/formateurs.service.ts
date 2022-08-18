@@ -22,10 +22,6 @@ export class FormateursService {
   }
 
   async findOne(id: string) {
-    console.log(
-      `${AGENTS_URI}/${id}`,
-      // `${ENTREPRISES_URI}/${agent.data.entreprise_id}`,
-    );
     // this.httpService.get().toPromise() est déprécié depuis RxJS 7
     const agent = await lastValueFrom(
       this.httpService.get(`${AGENTS_URI}/${id}`),
