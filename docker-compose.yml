@@ -42,7 +42,7 @@ services:
     ports:
       - 3004:3000
     environment:
-      - MONGO_URI=mongodb://mongo:27017/competence
+      - MONGO_URI=mongodb://mongo:27017/competences
       - APP_PORT=3000
 
   mongo:
