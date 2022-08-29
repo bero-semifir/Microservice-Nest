@@ -81,9 +81,17 @@ services:
       - ALLOW_PLAINTEXT_LISTENER=yes
     depends_on:
       - zookeeper
+  kuma:
+    image: louislam/uptime-kuma
+    ports:
+      - 9999:3001
+    volumes:
+      - kuma:/app/data
 
 volumes:
   zookeeper_data:
     driver: local
   kafka_data:
+    driver: local
+  kuma:
     driver: local
